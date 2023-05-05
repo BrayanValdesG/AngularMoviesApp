@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
-import { SlideshowComponent } from './slideshow/slideshow.component';
+import { NavbarComponent, SlideshowComponent } from './components';
 
 const COMPONENTS = [
   NavbarComponent,
@@ -22,4 +21,4 @@ const COMPONENTS = [
     ...COMPONENTS
   ]
 })
-export class ComponentsModule { }
+export class SharedModule { }
