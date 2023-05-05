@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/*';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { CarteleraResponse } from '../interfaces/cartelera-response';
+import { billPosterResponse } from '../interfaces/cartelera-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,8 @@ export class MoviesService {
     private http: HttpClient
   ) { }
 
-  getCartelera(): Observable<CarteleraResponse> {
-    return this.http.get<CarteleraResponse>(this.apiMovie + '/movie/now_playing?api_key=d41bffd877802499e927e98410db7f23&language=es-Es&page=1')
+  getBillPoster(): Observable<billPosterResponse> {
+    return this.http.get<billPosterResponse>(this.apiMovie + '/movie/now_playing?api_key=d41bffd877802499e927e98410db7f23&language=es-Es&page=1')
     .pipe(map(this.extractData))
     .pipe(catchError(this.handleError));
   }

@@ -1,4 +1,4 @@
-export interface CarteleraResponse {
+export interface billPosterResponse {
     dates:         Dates;
     page:          number;
     results:       Movie[];
