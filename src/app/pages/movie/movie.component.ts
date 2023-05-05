@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
-import { MovieDetailsResponse } from '@shared/interfaces';
+import { Cast, MovieDetailsResponse } from '@shared/interfaces';
 import { MoviesService } from '@shared/services';
 
 @Component({
@@ -16,8 +16,10 @@ export class MovieComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();
 
   public movie: MovieDetailsResponse = {} as MovieDetailsResponse;
+  cast: Cast[] = []
 
   constructor(
+    private router: Router,
     private activateRoute: ActivatedRoute,
     private moviesService: MoviesService,
     private location: Location
@@ -28,8 +30,19 @@ export class MovieComponent implements OnInit, OnDestroy {
       this.moviesService.getMovieDetails(id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((movieDetail) => {
+        console.log(movieDetail);
+        if (!movieDetail) {
+          this.router.navigateByUrl('/home');
+          return;
+        }
         this.movie = movieDetail;
-      })
+      });
+
+      // this.moviesService.getCreditsMovie(id)
+      // .pipe(takeUntil(this.unsubscribe$))
+      // .subscribe((cast) => {
+      //   console.log(cast);
+      // })
   }
 
   ngOnDestroy() {
