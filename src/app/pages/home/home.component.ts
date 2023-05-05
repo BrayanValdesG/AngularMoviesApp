@@ -10,11 +10,13 @@ import { MoviesService } from 'src/app/services/movies.service';
 export class HomeComponent {
 
   public movies: Movie[] = [];
+  public moviesSlideShow: Movie[] = [];
 
   constructor(private moviesService: MoviesService) {
     this.moviesService.getBillPoster()
-    .subscribe((res: billPosterResponse) => {
-      this.movies = res.results;
+    .subscribe((movies) => {
+      this.movies = movies;
+      this.moviesSlideShow = movies;
     })
   }
 

@@ -1,21 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { NavbarComponent, SlideshowComponent } from './components';
+
+import { RatingModule } from 'ng-starrating';
+
+
+import { NavbarComponent, SlideshowComponent, PeliculasPosterGridComponent } from './components';
+import { PipesModule } from '../pipes/pipes.module';
 
 const COMPONENTS = [
   NavbarComponent,
-  SlideshowComponent
+  SlideshowComponent,
+  PeliculasPosterGridComponent
 ]
 
 
 @NgModule({
   declarations: [
-    ...COMPONENTS,
+    ...COMPONENTS
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    RatingModule,
+    PipesModule
   ],
   exports: [
     ...COMPONENTS
