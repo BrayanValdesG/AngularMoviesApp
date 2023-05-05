@@ -16,7 +16,7 @@ export class MovieComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject<void>();
 
   public movie: MovieDetailsResponse = {} as MovieDetailsResponse;
-  cast: Cast[] = []
+  casts: Cast[] = [];
 
   constructor(
     private router: Router,
@@ -30,7 +30,6 @@ export class MovieComponent implements OnInit, OnDestroy {
       this.moviesService.getMovieDetails(id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((movieDetail) => {
-        console.log(movieDetail);
         if (!movieDetail) {
           this.router.navigateByUrl('/home');
           return;
@@ -38,11 +37,11 @@ export class MovieComponent implements OnInit, OnDestroy {
         this.movie = movieDetail;
       });
 
-      // this.moviesService.getCreditsMovie(id)
-      // .pipe(takeUntil(this.unsubscribe$))
-      // .subscribe((cast) => {
-      //   console.log(cast);
-      // })
+      this.moviesService.getCreditsMovie(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((cast) => {
+        this.casts = cast;
+      })
   }
 
   ngOnDestroy() {

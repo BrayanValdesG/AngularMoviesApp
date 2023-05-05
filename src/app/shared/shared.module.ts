@@ -5,13 +5,14 @@ import { RouterModule } from '@angular/router';
 import { RatingModule } from 'ng-starrating';
 
 
-import { NavbarComponent, SlideshowComponent, PeliculasPosterGridComponent } from './components';
+import { NavbarComponent, SlideshowComponent, PeliculasPosterGridComponent, CastSlideShowComponent } from './components';
 import { PosterPipe } from './pipes';
 
 const COMPONENTS = [
   NavbarComponent,
   SlideshowComponent,
-  PeliculasPosterGridComponent
+  PeliculasPosterGridComponent,
+  CastSlideShowComponent
 ];
 
 const PIPES = [
@@ -26,7 +27,7 @@ const MODULES_SHARES = [
 @NgModule({
   declarations: [
     ...COMPONENTS,
-    ...PIPES
+    ...PIPES,
   ],
   imports: [
     CommonModule,
@@ -36,7 +37,7 @@ const MODULES_SHARES = [
   exports: [
     ...COMPONENTS,
     ...PIPES,
-    ...MODULES_SHARES
+    ...MODULES_SHARES,
   ]
 })
 export class SharedModule { }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/*';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
-import { CreditsResponseMovie, Movie, MovieDetailsResponse, billPosterResponse } from '@shared/interfaces';
+import { Cast, CreditsResponseMovie, Movie, MovieDetailsResponse, billPosterResponse } from '@shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -56,21 +56,21 @@ export class MoviesService {
     .pipe(catchError(this.handleError));
   }
 
-  getMovieDetails(id: string): Observable<MovieDetailsResponse | null> {
+  getMovieDetails(id: string) {
     return this.http.get<MovieDetailsResponse>(`${this.apiMovie}/movie/${id}`, {
       params: this.params
     })
     .pipe(map(this.extractData))
-    .pipe(err => of(null));
+    .pipe(catchError(err => of(null)));
   }
 
-  getCreditsMovie(id: string): Observable<CreditsResponseMovie[]> {
+  getCreditsMovie(id: string): Observable<Cast[]> {
     return this.http.get<CreditsResponseMovie>(`${this.apiMovie}/movie/${id}/credits`, {
       params: this.params
     })
     .pipe(map((resp) => resp.cast))
     .pipe(map(this.extractData))
-    .pipe(err => of([]));
+    .pipe(catchError(err => of([])));
   }
 
   // Retorna el json de la petición
