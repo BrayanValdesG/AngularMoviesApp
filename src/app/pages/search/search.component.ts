@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Movie } from 'src/app/interfaces/cartelera-response';
-import { MoviesService } from 'src/app/services/movies.service';
+import { Movie } from '@shared/interfaces';
+import { MoviesService } from '@shared/services';
 
 @Component({
   selector: 'app-search',

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Movie } from 'src/app/interfaces/cartelera-response';
+import { Movie } from '@shared/interfaces';
 import Swiper from 'swiper';
 
 @Component({

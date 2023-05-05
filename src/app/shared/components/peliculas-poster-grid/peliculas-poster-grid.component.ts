@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Movie } from 'src/app/interfaces/cartelera-response';
+import { Movie } from '@shared/interfaces';
 
 @Component({
   selector: 'app-peliculas-poster-grid',

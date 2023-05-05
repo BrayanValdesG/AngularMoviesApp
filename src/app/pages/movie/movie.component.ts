@@ -3,8 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
-import { MovieDetailsResponse } from 'src/app/interfaces/movie-details-response';
-import { MoviesService } from 'src/app/services/movies.service';
+import { MovieDetailsResponse } from '@shared/interfaces';
+import { MoviesService } from '@shared/services';
 
 @Component({
   selector: 'app-movie',

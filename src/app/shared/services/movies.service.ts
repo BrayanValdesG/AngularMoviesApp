@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/*';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
-import { Movie, billPosterResponse } from '../interfaces/cartelera-response';
-import { MovieDetailsResponse } from '../interfaces/movie-details-response';
+import { Movie, MovieDetailsResponse, billPosterResponse } from '@shared/interfaces';
 
 @Injectable({
   providedIn: 'root'

@@ -6,27 +6,37 @@ import { RatingModule } from 'ng-starrating';
 
 
 import { NavbarComponent, SlideshowComponent, PeliculasPosterGridComponent } from './components';
-import { PipesModule } from '../pipes/pipes.module';
+import { PosterPipe } from './pipes';
 
 const COMPONENTS = [
   NavbarComponent,
   SlideshowComponent,
   PeliculasPosterGridComponent
-]
+];
+
+const PIPES = [
+  PosterPipe
+];
+
+const MODULES_SHARES = [
+  RatingModule
+];
 
 
 @NgModule({
   declarations: [
-    ...COMPONENTS
+    ...COMPONENTS,
+    ...PIPES
   ],
   imports: [
     CommonModule,
     RouterModule,
-    RatingModule,
-    PipesModule
+    ...MODULES_SHARES,
   ],
   exports: [
-    ...COMPONENTS
+    ...COMPONENTS,
+    ...PIPES,
+    ...MODULES_SHARES
   ]
 })
 export class SharedModule { }
