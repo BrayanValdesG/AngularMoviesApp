@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { Movie } from '@shared/interfaces';
 import Swiper from 'swiper';
 
@@ -7,14 +7,10 @@ import Swiper from 'swiper';
   templateUrl: './slideshow.component.html',
   styleUrls: ['./slideshow.component.scss']
 })
-export class SlideshowComponent implements OnInit, AfterViewInit {
+export class SlideshowComponent implements AfterViewInit {
 
   @Input() movies: Movie[] = [];
   swiper!: Swiper;
-
-  ngOnInit(): void {
-      // console.log(this.movies);
-  }
 
   ngAfterViewInit(): void {
     this.swiper = new Swiper('.swiper', {

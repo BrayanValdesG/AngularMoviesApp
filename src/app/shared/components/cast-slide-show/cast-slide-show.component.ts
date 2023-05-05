@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { Cast } from '@shared/interfaces';
 import Swiper from 'swiper';
 
@@ -7,13 +7,9 @@ import Swiper from 'swiper';
   templateUrl: './cast-slide-show.component.html',
   styleUrls: ['./cast-slide-show.component.scss']
 })
-export class CastSlideShowComponent implements OnInit, AfterViewInit {
+export class CastSlideShowComponent implements AfterViewInit {
 
   @Input() casts: Cast[] = [];
-
-  ngOnInit(): void {
-      // console.log(this.casts);
-  }
 
   ngAfterViewInit(): void {
     const swiper = new Swiper('.swiper', {
