@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Cast, MovieDetailsResponse } from '@shared/interfaces';
 import { MoviesService } from '@shared/services';
@@ -27,20 +27,19 @@ export class MovieComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
       const { id } = this.activateRoute.snapshot.params;
-      this.moviesService.getMovieDetails(id)
+
+      combineLatest([
+        this.moviesService.getMovieDetails(id),
+        this.moviesService.getCreditsMovie(id)
+      ])
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((movieDetail) => {
+      .subscribe(([movieDetail, casts]) => {
         if (!movieDetail) {
           this.router.navigateByUrl('/home');
           return;
         }
         this.movie = movieDetail;
-      });
-
-      this.moviesService.getCreditsMovie(id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((cast) => {
-        this.casts = cast;
+        this.casts = casts;
       })
   }
 
