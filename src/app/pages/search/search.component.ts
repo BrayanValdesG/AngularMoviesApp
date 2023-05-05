@@ -16,10 +16,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public movies: Movie[] = [];
   searchText = '';
+  total_pages: number[] = [];
+  total_number_pages: number = 0;
 
   constructor(
     private activateRoute: ActivatedRoute,
-    private moviesService: MoviesService
+    public moviesService: MoviesService
   ) {}
 
   ngOnInit(): void {
@@ -27,13 +29,40 @@ export class SearchComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(({text}) => {
       this.searchText = text;
-      this.moviesService.searchMovie(text).subscribe((movies) => {
-        this.movies = movies;
-      })
+      this.searchMovie(text);
     })
   }
 
+  searchMovie(text: string): void {
+    this.moviesService.searchMovie(text)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((resp) => {
+      this.total_number_pages = resp.total_pages;
+      this.total_pages = [];
+      for (let i = 0; i < resp.total_pages; i++) {
+        this.total_pages.push(i);
+      }
+      this.movies = resp.results;
+    })
+  }
+
+  onPrevious() {
+    this.moviesService.busquedaPage -=1;
+    this.searchMovie(this.searchText);
+  }
+
+  onNext() {
+    this.moviesService.busquedaPage +=1;
+    this.searchMovie(this.searchText);
+  }
+
+  onPaginate(number: number) {
+    this.moviesService.busquedaPage = number;
+    this.searchMovie(this.searchText);
+  }
+
   ngOnDestroy() {
+    this.moviesService.busquedaPage = 1;
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     this.unsubscribe$.unsubscribe();

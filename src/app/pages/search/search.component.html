@@ -7,3 +7,24 @@
         <app-peliculas-poster-grid *ngIf="movies.length > 0" [movies]="movies"></app-peliculas-poster-grid>
     </div>
 </div>
+
+<nav aria-label="Navigation Movies">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" (click)="moviesService.busquedaPage != 1 && onPrevious()" [ngClass]="{
+        'disabled': moviesService.busquedaPage == 1
+    }">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let page of total_pages; index as i" (click)="onPaginate(i + 1)" [ngClass]="{
+        'active': moviesService.busquedaPage == i + 1}">
+        <a class="page-link">
+            {{i + 1}}
+        </a>
+     </li>
+      <li class="page-item" (click)="moviesService.busquedaPage != total_number_pages && onNext()" [ngClass]="{
+        'disabled': moviesService.busquedaPage == total_number_pages
+    }">
+        <a class="page-link">Next</a>
+      </li>
+    </ul>
+  </nav>

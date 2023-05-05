@@ -11,6 +11,7 @@ export class MoviesService {
 
   private apiMovie = environment.urlBase;
   private carteleraPage = 1;
+  public busquedaPage = 1;
   public cargandoMoviesHome: boolean = false;
 
   constructor(
@@ -46,12 +47,15 @@ export class MoviesService {
     this.carteleraPage = 1;
   }
 
-  searchMovie(query: string): Observable<Movie[]> {
-    const params = {...this.params, page: 1, query};
+  searchMovie(query: string): Observable<billPosterResponse> {
+    const params = {...this.params, page: this.busquedaPage, query};
     return this.http.get<billPosterResponse>(`${this.apiMovie}/search/movie`, {
       params
     })
-    .pipe(map((resp) => resp.results))
+    .pipe(tap((r) => {
+      this.busquedaPage = r.page;
+    }))
+    // .pipe(map((resp) => resp.results))
     .pipe(map(this.extractData))
     .pipe(catchError(this.handleError));
   }
