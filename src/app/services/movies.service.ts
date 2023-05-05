@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env/*';
 import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { Movie, billPosterResponse } from '../interfaces/cartelera-response';
+import { MovieDetailsResponse } from '../interfaces/movie-details-response';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,14 @@ export class MoviesService {
       params
     })
     .pipe(map((resp) => resp.results))
+    .pipe(map(this.extractData))
+    .pipe(catchError(this.handleError));
+  }
+
+  getMovieDetails(id: string) {
+    return this.http.get<MovieDetailsResponse>(`${this.apiMovie}/movie/${id}`, {
+      params: this.params
+    })
     .pipe(map(this.extractData))
     .pipe(catchError(this.handleError));
   }
