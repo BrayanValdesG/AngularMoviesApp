@@ -1,4 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Movie } from 'src/app/interfaces/cartelera-response';
 import { MoviesService } from 'src/app/services/movies.service';
 
@@ -7,7 +9,9 @@ import { MoviesService } from 'src/app/services/movies.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
+
+  private unsubscribe$: Subject<void> = new Subject<void>();
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
@@ -19,6 +23,7 @@ export class HomeComponent {
         return;
       }
       this.moviesService.getBillPoster()
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((movies) => {
         this.movies.push(...movies)
       })
@@ -30,10 +35,18 @@ export class HomeComponent {
 
   constructor(private moviesService: MoviesService) {
     this.moviesService.getBillPoster()
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe((movies) => {
       this.movies = movies;
       this.moviesSlideShow = movies;
     })
+  }
+
+  ngOnDestroy() {
+    this.moviesService.resetCarteleraPage();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.unsubscribe$.unsubscribe();
   }
 
 }

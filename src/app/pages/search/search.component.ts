@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Movie } from 'src/app/interfaces/cartelera-response';
 import { MoviesService } from 'src/app/services/movies.service';
 
 @Component({
@@ -7,7 +10,12 @@ import { MoviesService } from 'src/app/services/movies.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$: Subject<void> = new Subject<void>();
+
+  public movies: Movie[] = [];
+  searchText = '';
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -15,12 +23,20 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activateRoute.params.subscribe(({text}) => {
-      console.log(text);
+    this.activateRoute.params
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(({text}) => {
+      this.searchText = text;
       this.moviesService.searchMovie(text).subscribe((movies) => {
-        console.log(movies);
+        this.movies = movies;
       })
     })
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.unsubscribe$.unsubscribe();
   }
 
 }

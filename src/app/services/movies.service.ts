@@ -42,6 +42,10 @@ export class MoviesService {
     .pipe(catchError(this.handleError));
   }
 
+  resetCarteleraPage() {
+    this.carteleraPage = 1;
+  }
+
   searchMovie(query: string): Observable<Movie[]> {
     const params = {...this.params, page: 1, query};
     return this.http.get<billPosterResponse>(`${this.apiMovie}/search/movie`, {
