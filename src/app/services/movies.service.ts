@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/*';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { Movie, billPosterResponse } from '../interfaces/cartelera-response';
 
 @Injectable({
@@ -11,6 +11,7 @@ export class MoviesService {
 
   private apiMovie = environment.urlBase;
   private carteleraPage = 1;
+  public cargandoMoviesHome: boolean = false;
 
   constructor(
     private http: HttpClient
@@ -25,13 +26,28 @@ export class MoviesService {
   }
 
   getBillPoster(): Observable<Movie[]> {
-    return this.http.get<billPosterResponse>(this.apiMovie + '/movie/now_playing', {
+    if (this.cargandoMoviesHome) {
+      return of([]);
+    }
+    this.cargandoMoviesHome = true;
+    return this.http.get<billPosterResponse>(`${this.apiMovie}/movie/now_playing`, {
       params: this.params
     })
     .pipe(map((resp) => resp.results))
     .pipe(tap(() => {
       this.carteleraPage += 1;
+      this.cargandoMoviesHome = false;
     }))
+    .pipe(map(this.extractData))
+    .pipe(catchError(this.handleError));
+  }
+
+  searchMovie(query: string): Observable<Movie[]> {
+    const params = {...this.params, page: 1, query};
+    return this.http.get<billPosterResponse>(`${this.apiMovie}/search/movie`, {
+      params
+    })
+    .pipe(map((resp) => resp.results))
     .pipe(map(this.extractData))
     .pipe(catchError(this.handleError));
   }
